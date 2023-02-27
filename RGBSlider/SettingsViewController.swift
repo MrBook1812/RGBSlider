@@ -18,9 +18,8 @@ final class SettingsViewController: UIViewController {
     @IBOutlet var greenSlider: UISlider!
     @IBOutlet var blueSlider: UISlider!
     
+    unowned var delegate: SettingsViewControllerDelegate!
     var color: UIColor!
-    
-    unowned var delegate: MainViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,14 +33,14 @@ final class SettingsViewController: UIViewController {
             alpha: 1
         )
         
+        rgbView.backgroundColor = color
+        
         redLabel.text = String(format: "%.2f", redSlider.value)
         greenLabel.text = String(format: "%.2f", greenSlider.value)
         blueLabel.text = String(format: "%.2f", blueSlider.value)
-        
-     //   rgbView.backgroundColor = color
-    
     }
-    @IBAction func SliderAction() {
+    
+    @IBAction func sliderAction() {
         rgbView.backgroundColor = UIColor(
             red: CGFloat(redSlider.value),
             green: CGFloat(greenSlider.value),
@@ -54,9 +53,8 @@ final class SettingsViewController: UIViewController {
         blueLabel.text = String(format: "%.2f", blueSlider.value)
     }
     @IBAction func doneButtonPressed() {
-    guard let backgroundColor = rgbView.backgroundColor else { return }
-    delegate.setNewBackgroundColor(for: backgroundColor)
-    dismiss(animated: true)
+        delegate.setNewBackgroundColor(rgbView.backgroundColor ?? .white)
+        dismiss(animated: true)
     }
 }
 
